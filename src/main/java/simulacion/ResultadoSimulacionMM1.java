@@ -1,4 +1,3 @@
-// Archivo: ResultadoSimulacionMM1.java
 package simulacion;
 
 import util.Estadisticas;
@@ -19,12 +18,14 @@ public class ResultadoSimulacionMM1 {
     private final List<Double> tiemposEspera;
     private final List<Double> tiemposEnSistema;
     private final List<Cliente> clientesCompletados;
+    private final double tiempoTotalSimulacion; // Nuevo campo
     
     public ResultadoSimulacionMM1(double Wq_sim, double W_sim, double Lq_sim, double L_sim,
                                   double utilizacion, int maxCola, double maxEspera,
                                   int clientesSinEspera, int N,
                                   List<Double> tiemposEspera, List<Double> tiemposEnSistema,
-                                  List<Cliente> clientesCompletados) {
+                                  List<Cliente> clientesCompletados,
+                                  double tiempoTotalSimulacion) { // Nuevo parámetro
         this.Wq_sim = Wq_sim;
         this.W_sim = W_sim;
         this.Lq_sim = Lq_sim;
@@ -37,6 +38,7 @@ public class ResultadoSimulacionMM1 {
         this.tiemposEspera = tiemposEspera;
         this.tiemposEnSistema = tiemposEnSistema;
         this.clientesCompletados = clientesCompletados;
+        this.tiempoTotalSimulacion = tiempoTotalSimulacion;
     }
     
     // Getters
@@ -50,31 +52,23 @@ public class ResultadoSimulacionMM1 {
     public int getClientesSinEspera() { return clientesSinEspera; }
     public List<Cliente> getClientesCompletados() { return clientesCompletados; }
     
-    /**
-     * Genera tabla detallada para JavaFX (por ahora en consola)
-     * Formato: CLIENTE# | ALEATORIO1 | TIEMPO_ENTRE_LLEGADA | MOMENTO_LLEGADA | 
-     *          TIEMPO_INICIO_SERVICIO | TIEMPO_ESPERA | ALEATORIO2 | TIEMPO_SERVICIO | 
-     *          TIEMPO_TERMINACION_SERVICIO | TIEMPO_OCIO1 | TIEMPO_SISTEMA
-     */
     public String[][] obtenerTablaDetallada() {
         String[][] tabla = new String[clientesCompletados.size()][11];
         
         for (int i = 0; i < clientesCompletados.size(); i++) {
             Cliente c = clientesCompletados.get(i);
-            
-            tabla[i][0] = String.valueOf(c.getId()); // Cliente#
-            tabla[i][1] = String.format("%.4f", c.getAleatorio1()); // Aleatorio 1
-            tabla[i][2] = String.format("%.4f", c.getTiempoEntreLlegada()); // Tiempo entre llegada
-            tabla[i][3] = String.format("%.4f", c.getTiempoLlegada()); // Momento de llegada
-            tabla[i][4] = String.format("%.4f", c.getTiempoInicioServicio()); // Tiempo inicio servicio
-            tabla[i][5] = String.format("%.4f", c.getTiempoEspera()); // Tiempo espera
-            tabla[i][6] = String.format("%.4f", c.getAleatorio2()); // Aleatorio 2
-            tabla[i][7] = String.format("%.4f", c.getTiempoServicio()); // Tiempo servicio
-            tabla[i][8] = String.format("%.4f", c.getTiempoFinServicio()); // Tiempo terminación servicio
-            tabla[i][9] = String.format("%.4f", c.getTiempoOcio()); // Tiempo ocio
-            tabla[i][10] = String.format("%.4f", c.getTiempoEnSistema()); // Tiempo en sistema
+            tabla[i][0] = String.valueOf(c.getId());
+            tabla[i][1] = String.format("%.4f", c.getAleatorio1());
+            tabla[i][2] = String.format("%.4f", c.getTiempoEntreLlegada());
+            tabla[i][3] = String.format("%.4f", c.getTiempoLlegada());
+            tabla[i][4] = String.format("%.4f", c.getTiempoInicioServicio());
+            tabla[i][5] = String.format("%.4f", c.getTiempoEspera());
+            tabla[i][6] = String.format("%.4f", c.getAleatorio2());
+            tabla[i][7] = String.format("%.4f", c.getTiempoServicio());
+            tabla[i][8] = String.format("%.4f", c.getTiempoFinServicio());
+            tabla[i][9] = String.format("%.4f", c.getTiempoOcio());
+            tabla[i][10] = String.format("%.4f", c.getTiempoEnSistema());
         }
-        
         return tabla;
     }
     
@@ -119,11 +113,12 @@ public class ResultadoSimulacionMM1 {
         double[] ic95Wq = Estadisticas.calcularIC95(tiemposEspera);
         sb.append(String.format("IC 95%% para Wq: [%.4f, %.4f]\n", ic95Wq[0], ic95Wq[1]));
         
+        // CORRECCIÓN: Cálculo de Ley de Little usando el tiempo total real
         sb.append("\n--- VALIDACIÓN (LEY DE LITTLE) ---\n");
-        double lambdaEfectiva = N / tiemposEnSistema.get(tiemposEnSistema.size()-1);
+        double lambdaEfectiva = N / tiempoTotalSimulacion; // Antes usaba el último tiempo de servicio
         double L_little = lambdaEfectiva * W_sim;
         sb.append(String.format("L (simulado): %.4f\n", L_sim));
-        sb.append(String.format("λ·W (Ley de Little): %.4f\n", L_little));
+        sb.append(String.format("λ efect·W (Ley de Little): %.4f\n", L_little));
         sb.append(String.format("Diferencia: %.4f%%\n",
             Estadisticas.calcularErrorRelativo(L_sim, L_little)));
         

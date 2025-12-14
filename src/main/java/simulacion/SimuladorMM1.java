@@ -59,7 +59,6 @@ public class SimuladorMM1 {
                 clientesEnSistema++;
 
                 if (servidor.isLibre()) {
-
                     double tiempoOcio = reloj - ultimoTiempoFinServicio;
                     cliente.setTiempoOcio(tiempoOcio);
 
@@ -72,9 +71,7 @@ public class SimuladorMM1 {
                             new Evento(Evento.TipoEvento.FIN_SERVICIO,
                                     servidor.getTiempoFinServicio(), cliente, 0)
                     );
-
                 } else {
-
                     cliente.setTiempoOcio(0);
                     colaClientes.add(cliente);
                     longitudColaActual++;
@@ -102,9 +99,11 @@ public class SimuladorMM1 {
                 clientesCompletados.add(cliente);
                 clientesEnSistema--;
                 ultimoTiempoFinServicio = reloj;
+                
+                // CORRECCIÓN CLAVE: Registrar estadísticas del servidor INMEDIATAMENTE
+                servidor.liberarServidor(reloj);
 
                 if (!colaClientes.isEmpty()) {
-
                     Cliente siguienteCliente = colaClientes.poll();
                     longitudColaActual--;
 
@@ -119,15 +118,12 @@ public class SimuladorMM1 {
                             new Evento(Evento.TipoEvento.FIN_SERVICIO,
                                     servidor.getTiempoFinServicio(), siguienteCliente, 0)
                     );
-
-                } else {
-                    servidor.liberarServidor(reloj);
                 }
+                // Si la cola está vacía, el servidor ya quedó libre arriba
             }
         }
 
-        // Cálculo de métricas finales
-        double tiempoTotal = reloj;
+        double tiempoTotal = reloj; // Tiempo final de la simulación
         double Lq_sim = areaLq / tiempoTotal;
         double L_sim = areaL / tiempoTotal;
 
@@ -141,11 +137,8 @@ public class SimuladorMM1 {
             tiemposEspera.add(espera);
             tiemposEnSistema.add(c.getTiempoEnSistema());
 
-            if (espera > maxEspera)
-                maxEspera = espera;
-
-            if (espera == 0)
-                clientesSinEspera++;
+            if (espera > maxEspera) maxEspera = espera;
+            if (espera == 0) clientesSinEspera++;
         }
 
         double Wq_sim = Estadisticas.calcularMedia(tiemposEspera);
@@ -155,7 +148,8 @@ public class SimuladorMM1 {
         return new ResultadoSimulacionMM1(
                 Wq_sim, W_sim, Lq_sim, L_sim, utilizacion,
                 maxCola, maxEspera, clientesSinEspera, N,
-                tiemposEspera, tiemposEnSistema, clientesCompletados
+                tiemposEspera, tiemposEnSistema, clientesCompletados,
+                tiempoTotal // CORRECCIÓN: Pasamos el tiempo total
         );
     }
 }

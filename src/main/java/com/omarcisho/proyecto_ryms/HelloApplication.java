@@ -1,9 +1,9 @@
 package com.omarcisho.proyecto_ryms;
+
 import analitico.*;
 import simulacion.*;
 import util.ValidadorParametros;
 import java.util.Scanner;
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -14,15 +14,19 @@ import java.io.IOException;
 public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-        stage.setTitle("Hello!");
+        // Carga la vista del Menú Principal
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("MenuPrincipal.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        stage.setTitle("Sistema de Colas - UPIICSA");
+        // stage.setMaximized(true); // Opcional
         stage.setScene(scene);
         stage.show();
     }
 
     public static void main(String[] args) {
-        //launch();
+
+        launch();
+
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("╔════════════════════════════════════════════════╗");
@@ -30,7 +34,7 @@ public class HelloApplication extends Application {
         System.out.println("╚════════════════════════════════════════════════╝\n");
 
         while (true) {
-            System.out.println("\n=== MENÚ PRINCIPAL ===");
+            System.out.println("\n=== MENÚ PRINCIPAL (Modo Consola) ===");
             System.out.println("1. Sistema M/M/1 (Un servidor)");
             System.out.println("2. Sistema M/M/s (Múltiples servidores)");
             System.out.println("0. Salir");
@@ -52,7 +56,9 @@ public class HelloApplication extends Application {
                     System.out.println("❌ Opción inválida.");
                 }
             } catch (Exception e) {
+                e.printStackTrace(); // Imprimir error completo para depurar
                 System.out.println("\n❌ ERROR: " + e.getMessage());
+                scanner.nextLine(); // Limpiar buffer en caso de error de entrada
             }
         }
 
@@ -115,6 +121,7 @@ public class HelloApplication extends Application {
             }
 
             System.out.println("\n🔄 Ejecutando simulación...");
+            // Nota: MM1 no requiere warmUp explícito en el constructor, se maneja interno o simple
             ResultadoSimulacionMM1 resultadoSim = SimuladorMM1.simular(lambda, mu, N, semilla);
 
             // PASO 3: MOSTRAR COMPARACIÓN
@@ -187,8 +194,14 @@ public class HelloApplication extends Application {
                 semilla = scanner.nextLong();
             }
 
+            // CORRECCIÓN PARA M/M/s: Definir Warm-Up
+            // Usamos un 20% de N como periodo de calentamiento
+            int warmUp = (int) (N * 0.20);
+            System.out.println("ℹ️  Se descartarán los primeros " + warmUp + " clientes (Warm-up 20%) para estabilizar métricas.");
+
             System.out.println("\n🔄 Ejecutando simulación...");
-            ResultadoSimulacionMMs resultadoSim = SimuladorMMs.simular(lambda, mu, s, N, semilla);
+            // Llamada actualizada con el parámetro warmUp
+            ResultadoSimulacionMMs resultadoSim = SimuladorMMs.simular(lambda, mu, s, N, warmUp, semilla);
 
             // PASO 3: MOSTRAR COMPARACIÓN
             System.out.println(resultadoSim.generarReporte(resultadoAnalitico));
