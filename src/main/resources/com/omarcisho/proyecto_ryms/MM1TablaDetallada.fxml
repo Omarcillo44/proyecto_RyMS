@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox spacing="15.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tuapp.controller.MM1TablaDetalladaController">
+   <padding>
+      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+   </padding>
+   
+   <!-- Encabezado -->
+   <HBox alignment="CENTER_LEFT" spacing="10.0">
+      <Button fx:id="btnVolver" mnemonicParsing="false" onAction="#volver" text="← Volver" />
+      <Label text="TABLA DETALLADA - M/M/1" HBox.hgrow="ALWAYS">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+   </HBox>
+   
+   <Label fx:id="lblNumClientes" text="Clientes simulados: -">
+      <font>
+         <Font size="14.0" />
+      </font>
+   </Label>
+   
+   <Separator />
+   
+   <!-- Tabla Detallada -->
+   <ScrollPane fitToHeight="true" fitToWidth="true" VBox.vgrow="ALWAYS">
+      <content>
+         <TableView fx:id="tableDetallada" prefHeight="500.0">
+            <columns>
+               <TableColumn fx:id="colCliente" minWidth="80.0" prefWidth="80.0" text="Cliente #" />
+               <TableColumn fx:id="colAleatorio1" minWidth="100.0" prefWidth="120.0" text="Aleatorio 1" />
+               <TableColumn fx:id="colTiempoEntreLlegada" minWidth="120.0" prefWidth="150.0" text="Tiempo entre Llegada" />
+               <TableColumn fx:id="colMomentoLlegada" minWidth="120.0" prefWidth="140.0" text="Momento Llegada" />
+               <TableColumn fx:id="colTiempoInicioServicio" minWidth="120.0" prefWidth="150.0" text="Tiempo Inicio Servicio" />
+               <TableColumn fx:id="colTiempoEspera" minWidth="120.0" prefWidth="140.0" text="Tiempo Espera" />
+               <TableColumn fx:id="colAleatorio2" minWidth="100.0" prefWidth="120.0" text="Aleatorio 2" />
+               <TableColumn fx:id="colTiempoServicio" minWidth="120.0" prefWidth="140.0" text="Tiempo Servicio" />
+               <TableColumn fx:id="colTiempoTerminacion" minWidth="120.0" prefWidth="150.0" text="Tiempo Terminación" />
+               <TableColumn fx:id="colTiempoOcio" minWidth="120.0" prefWidth="130.0" text="Tiempo Ocio" />
+               <TableColumn fx:id="colTiempoSistema" minWidth="120.0" prefWidth="140.0" text="Tiempo Sistema" />
+            </columns>
+         </TableView>
+      </content>
+   </ScrollPane>
+   
+   <!-- Botones de Acción -->
+   <HBox alignment="CENTER_LEFT" spacing="15.0">
+      <padding>
+         <Insets top="10.0" />
+      </padding>
+      <Button fx:id="btnExportar" mnemonicParsing="false" onAction="#exportarCSV" text="Exportar a CSV">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnImprimir" mnemonicParsing="false" onAction="#imprimir" text="Imprimir">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+   </HBox>
+</VBox>

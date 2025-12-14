@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<ScrollPane fitToWidth="true" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tuapp.controller.MM1SimulacionController">
+   <content>
+      <VBox spacing="20.0">
+         <padding>
+            <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+         </padding>
+         
+         <!-- Encabezado -->
+         <HBox alignment="CENTER_LEFT" spacing="10.0">
+            <Button fx:id="btnVolver" mnemonicParsing="false" onAction="#volver" text="← Volver" />
+            <Label text="SISTEMA M/M/1 - SIMULACIÓN" HBox.hgrow="ALWAYS">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+         </HBox>
+         
+         <Separator />
+         
+         <!-- Parámetros Heredados -->
+         <VBox spacing="10.0">
+            <Label text="PARÁMETROS HEREDADOS (Analítico)" style="-fx-font-weight: bold; -fx-font-size: 16px;" />
+            <HBox spacing="30.0">
+               <Label fx:id="lblLambdaHeredado" text="λ = -" style="-fx-font-size: 14px;" />
+               <Label fx:id="lblMuHeredado" text="μ = -" style="-fx-font-size: 14px;" />
+            </HBox>
+         </VBox>
+         
+         <Separator />
+         
+         <!-- Parámetros de Simulación -->
+         <VBox spacing="15.0">
+            <Label text="PARÁMETROS DE SIMULACIÓN" style="-fx-font-weight: bold; -fx-font-size: 16px;" />
+            
+            <HBox alignment="CENTER_LEFT" spacing="10.0">
+               <Label text="N (Clientes a simular):" />
+               <TextField fx:id="txtN" prefWidth="120.0" promptText="Ej: 1000" />
+               <Label text="(mínimo 100)" style="-fx-font-size: 11px; -fx-text-fill: gray;" />
+            </HBox>
+            
+            <HBox alignment="CENTER_LEFT" spacing="10.0">
+               <CheckBox fx:id="chkUsarSemilla" mnemonicParsing="false" text="Usar semilla aleatoria:" />
+               <TextField fx:id="txtSemilla" disable="true" prefWidth="120.0" promptText="Ej: 12345" />
+            </HBox>
+            
+            <HBox alignment="CENTER_LEFT" spacing="15.0">
+               <Button fx:id="btnEjecutarSimulacion" mnemonicParsing="false" onAction="#ejecutarSimulacion" text="Ejecutar Simulación">
+                  <font>
+                     <Font name="System Bold" size="14.0" />
+                  </font>
+               </Button>
+               <ProgressBar fx:id="progressBar" prefWidth="250.0" progress="0.0" visible="false" />
+               <Label fx:id="lblProgreso" text="0%" visible="false" />
+            </HBox>
+         </VBox>
+         
+         <Separator />
+         
+         <!-- Comparación -->
+         <VBox fx:id="vboxComparacion" spacing="15.0" visible="false">
+            <Label text="COMPARACIÓN: ANALÍTICO vs SIMULACIÓN" style="-fx-font-weight: bold; -fx-font-size: 16px;" />
+            
+            <TableView fx:id="tableComparacion" prefHeight="200.0">
+               <columns>
+                  <TableColumn fx:id="colMetrica" prefWidth="150.0" text="Métrica" />
+                  <TableColumn fx:id="colTeorico" prefWidth="150.0" text="Teórico" />
+                  <TableColumn fx:id="colSimulado" prefWidth="150.0" text="Simulado" />
+                  <TableColumn fx:id="colError" prefWidth="120.0" text="Error %" />
+               </columns>
+            </TableView>
+         </VBox>
+         
+         <!-- Métricas Adicionales -->
+         <VBox fx:id="vboxMetricasAdicionales" spacing="12.0" visible="false">
+            <Label text="MÉTRICAS ADICIONALES (Solo Simulación)" style="-fx-font-weight: bold; -fx-font-size: 16px;" />
+            
+            <Label fx:id="lblMaxCola" text="• Máxima longitud de cola: -" />
+            <Label fx:id="lblMaxEspera" text="• Tiempo máximo de espera: -" />
+            <Label fx:id="lblSinEspera" text="• Clientes sin espera: -" />
+            <Label fx:id="lblIC95" text="• IC 95% para Wq: -" />
+            
+            <Button fx:id="btnVerTabla" mnemonicParsing="false" onAction="#verTablaDetallada" prefWidth="200.0" text="Ver Tabla Detallada">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+         </VBox>
+      </VBox>
+   </content>
+</ScrollPane>

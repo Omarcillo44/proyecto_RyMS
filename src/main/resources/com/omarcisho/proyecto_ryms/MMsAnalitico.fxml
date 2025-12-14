@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<ScrollPane fitToWidth="true" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tuapp.controller.MMsAnaliticoController">
+   <content>
+      <VBox spacing="20.0">
+         <padding>
+            <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+         </padding>
+         
+         <!-- Encabezado -->
+         <HBox alignment="CENTER_LEFT" spacing="10.0">
+            <Button fx:id="btnVolver" mnemonicParsing="false" onAction="#volver" text="← Volver" />
+            <Label text="SISTEMA M/M/s - SOLUCIÓN ANALÍTICA" HBox.hgrow="ALWAYS">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+         </HBox>
+         
+         <Separator />
+         
+         <!-- Parámetros de Entrada -->
+         <VBox spacing="15.0">
+            <Label text="PARÁMETROS DE ENTRADA" style="-fx-font-weight: bold; -fx-font-size: 16px;" />
+            
+            <GridPane hgap="15.0" vgap="12.0">
+               <Label text="λ (Tasa de llegadas):" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+               <TextField fx:id="txtLambda" promptText="Ej: 25.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+               <Label text="clientes/hora" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+               
+               <Label text="μ (Tasa de servicio/servidor):" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+               <TextField fx:id="txtMu" promptText="Ej: 7.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+               <Label text="clientes/hora" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+               
+               <Label text="s (Número de servidores):" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+               <TextField fx:id="txtS" promptText="Ej: 4" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+               <Label text="entero" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            </GridPane>
+         </VBox>
+         
+         <!-- Parámetros Opcionales -->
+         <VBox spacing="10.0">
+            <Label text="Parámetros Opcionales" style="-fx-font-weight: bold; -fx-font-size: 14px;" />
+            
+            <HBox alignment="CENTER_LEFT" spacing="10.0">
+               <CheckBox fx:id="chkCalcularK" mnemonicParsing="false" text="Calcular P(n>k)" />
+               <Label text="k =" />
+               <TextField fx:id="txtK" prefWidth="80.0" promptText="Ej: 5" />
+            </HBox>
+            
+            <HBox alignment="CENTER_LEFT" spacing="10.0">
+               <CheckBox fx:id="chkCalcularT" mnemonicParsing="false" text="Calcular P(W>t)" />
+               <Label text="t =" />
+               <TextField fx:id="txtT" prefWidth="80.0" promptText="Ej: 0.5" />
+            </HBox>
+         </VBox>
+         
+         <Button fx:id="btnCalcular" mnemonicParsing="false" onAction="#calcular" prefWidth="200.0" text="Calcular Resultados">
+            <font>
+               <Font name="System Bold" size="14.0" />
+            </font>
+         </Button>
+         
+         <Separator />
+         
+         <!-- Resultados Analíticos -->
+         <VBox fx:id="vboxResultados" spacing="15.0" visible="false">
+            <Label text="RESULTADOS ANALÍTICOS" style="-fx-font-weight: bold; -fx-font-size: 16px;" />
+            
+            <GridPane hgap="20.0" vgap="10.0">
+               <Label text="Estado del sistema:" style="-fx-font-weight: bold;" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+               <Label fx:id="lblEstado" text="-" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+               
+               <Label text="Intensidad por servidor (ρ):" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+               <Label fx:id="lblRho" text="-" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+               
+               <Label text="Tráfico ofrecido (a):" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+               <Label fx:id="lblA" text="-" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+               
+               <Label text="P₀ (Sistema vacío):" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+               <Label fx:id="lblP0" text="-" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+               
+               <Label text="C (Erlang C - Prob. espera):" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+               <Label fx:id="lblC" text="-" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+               
+               <Label text="Lq (Prom. en cola):" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+               <Label fx:id="lblLq" text="-" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+               
+               <Label text="L (Prom. en sistema):" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+               <Label fx:id="lblL" text="-" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+               
+               <Label text="Wq (Tiempo en cola):" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+               <Label fx:id="lblWq" text="-" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+               
+               <Label text="W (Tiempo en sistema):" GridPane.columnIndex="0" GridPane.rowIndex="8" />
+               <Label fx:id="lblW" text="-" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+               
+               <Label text="U (Utilización):" GridPane.columnIndex="0" GridPane.rowIndex="9" />
+               <Label fx:id="lblU" text="-" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+               
+               <Label fx:id="lblTituloPnMasK" text="P(n>k):" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="10" />
+               <Label fx:id="lblPnMasK" text="-" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+               
+               <Label fx:id="lblTituloPWqMayorT" text="P(Wq>t):" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="11" />
+               <Label fx:id="lblPWqMayorT" text="-" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+               
+               <Label fx:id="lblTituloPWsMayorT" text="P(Ws>t):" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="12" />
+               <Label fx:id="lblPWsMayorT" text="-" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="12" />
+            </GridPane>
+            
+            <Button fx:id="btnIrSimulacion" mnemonicParsing="false" onAction="#irSimulacion" prefWidth="200.0" text="Ir a Simulación">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Button>
+         </VBox>
+      </VBox>
+   </content>
+</ScrollPane>

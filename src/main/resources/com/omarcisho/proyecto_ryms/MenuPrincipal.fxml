@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" spacing="25.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tuapp.controller.MenuPrincipalController">
+   <padding>
+      <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+   </padding>
+   
+   <Label fx:id="lblTitulo" text="SISTEMA DE LÍNEAS DE ESPERA" textAlignment="CENTER">
+      <font>
+         <Font name="System Bold" size="24.0" />
+      </font>
+   </Label>
+   
+   <Label fx:id="lblSubtitulo" text="M/M/1 y M/M/s" textAlignment="CENTER">
+      <font>
+         <Font size="18.0" />
+      </font>
+   </Label>
+   
+   <VBox alignment="CENTER" spacing="15.0">
+      <padding>
+         <Insets top="30.0" />
+      </padding>
+      
+      <Label text="Seleccione el tipo de sistema:">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      
+      <Button fx:id="btnMM1" mnemonicParsing="false" onAction="#abrirMM1" prefWidth="250.0" text="Sistema M/M/1 (Un servidor)">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      
+      <Button fx:id="btnMMs" mnemonicParsing="false" onAction="#abrirMMs" prefWidth="250.0" text="Sistema M/M/s (Múltiples servidores)">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      
+      <Button fx:id="btnSalir" mnemonicParsing="false" onAction="#salir" prefWidth="250.0" text="Salir">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+   </VBox>
+</VBox>
