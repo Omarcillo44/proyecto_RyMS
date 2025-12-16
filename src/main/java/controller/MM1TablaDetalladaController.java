@@ -3,11 +3,18 @@ package controller;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import modelo.Cliente;
+
+import java.io.IOException;
 import java.util.List;
 
 public class MM1TablaDetalladaController {
@@ -39,10 +46,16 @@ public class MM1TablaDetalladaController {
 
         tableDetallada.setItems(FXCollections.observableArrayList(clientes));
     }
-    
+
     @FXML
-    void volver(ActionEvent event) {
-        // Implementar lógica de regreso a la simulación
+    void volver(ActionEvent event) throws IOException {
+        // Regresamos a la vista Analítica para reiniciar el flujo correctamente
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/omarcisho/proyecto_ryms/MM1Analitico.fxml"));
+        Parent root = loader.load();
+
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setMaximized(true);
+        stage.setScene(new Scene(root));
     }
 
     @FXML

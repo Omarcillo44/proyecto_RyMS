@@ -10,62 +10,60 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox spacing="15.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MMsTablaDetalladaController">   <padding>
+<VBox spacing="15.0" prefHeight="1080.0" prefWidth="1920.0"
+      xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="controller.MMsTablaDetalladaController">
+   <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
    </padding>
-   
-   <!-- Encabezado -->
+
    <HBox alignment="CENTER_LEFT" spacing="10.0">
       <Button fx:id="btnVolver" mnemonicParsing="false" onAction="#volver" text="← Volver" />
-      <Label fx:id="lblTituloTabla" text="TABLA DETALLADA - M/M/s" HBox.hgrow="ALWAYS">
+      <Label fx:id="lblTituloTabla" text="TABLA DETALLADA - M/M/s" HBox.hgrow="ALWAYS" maxWidth="Infinity">
          <font>
-            <Font name="System Bold" size="20.0" />
+            <Font name="System Bold" size="24.0" />
          </font>
       </Label>
    </HBox>
-   
+
    <HBox spacing="30.0">
       <Label fx:id="lblNumClientes" text="Clientes simulados: -">
          <font>
-            <Font size="14.0" />
+            <Font size="16.0" />
          </font>
       </Label>
       <Label fx:id="lblNumServidores" text="Servidores: -">
          <font>
-            <Font size="14.0" />
+            <Font size="16.0" />
          </font>
       </Label>
    </HBox>
-   
+
    <Separator />
-   
-   <!-- Tabla Detallada con columnas dinámicas -->
+
    <ScrollPane fitToHeight="true" fitToWidth="true" VBox.vgrow="ALWAYS">
       <content>
-         <TableView fx:id="tableDetallada" prefHeight="500.0">
-            <!-- Las columnas se generarán dinámicamente en el controlador según el número de servidores -->
+         <TableView fx:id="tableDetallada">
          </TableView>
       </content>
    </ScrollPane>
-   
-   <!-- Nota informativa -->
+
    <VBox spacing="5.0" style="-fx-background-color: #f0f0f0; -fx-padding: 10px; -fx-background-radius: 5px;">
-      <Label text="Nota:" style="-fx-font-weight: bold;" />
-      <Label text="Las columnas se expanden dinámicamente según el número de servidores (s)." wrapText="true" />
-      <Label text="Puede desplazarse horizontalmente para ver todas las columnas." wrapText="true" />
+      <Label text="Nota:" style="-fx-font-weight: bold; -fx-font-size: 14px;" />
+      <Label text="Las columnas se expanden dinámicamente según el número de servidores (s)." wrapText="true" style="-fx-font-size: 13px;" />
+      <Label text="Puede desplazarse horizontalmente para ver todas las columnas." wrapText="true" style="-fx-font-size: 13px;" />
    </VBox>
-   
-   <!-- Botones de Acción -->
+
    <HBox alignment="CENTER_LEFT" spacing="15.0">
       <padding>
          <Insets top="10.0" />
       </padding>
-      <Button fx:id="btnExportar" mnemonicParsing="false" onAction="#exportarCSV" text="Exportar a CSV">
+      <Button fx:id="btnExportar" mnemonicParsing="false" onAction="#exportarCSV" prefHeight="40.0" text="Exportar a CSV">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button fx:id="btnImprimir" mnemonicParsing="false" onAction="#imprimir" text="Imprimir">
+      <Button fx:id="btnImprimir" mnemonicParsing="false" onAction="#imprimir" prefHeight="40.0" text="Imprimir">
          <font>
             <Font size="14.0" />
          </font>

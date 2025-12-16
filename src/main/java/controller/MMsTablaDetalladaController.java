@@ -97,6 +97,7 @@ public class MMsTablaDetalladaController {
         // Opción segura: Volver al menú o a la pantalla de parámetros M/M/s
         Parent menu = FXMLLoader.load(getClass().getResource("/com/omarcisho/proyecto_ryms/MMsAnalitico.fxml")); 
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setMaximized(true);
         stage.setScene(new Scene(menu));
     }
 

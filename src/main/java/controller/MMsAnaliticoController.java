@@ -100,6 +100,8 @@ public class MMsAnaliticoController {
         controller.initData(resultadoActual, lambda, mu, s);
 
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setMaximized(true);
+
         stage.setScene(new Scene(root));
     }
     

@@ -25,7 +25,7 @@ public class ResultadoSimulacionMM1 {
                                   int clientesSinEspera, int N,
                                   List<Double> tiemposEspera, List<Double> tiemposEnSistema,
                                   List<Cliente> clientesCompletados,
-                                  double tiempoTotalSimulacion) { // Nuevo parámetro
+                                  double tiempoTotalSimulacion) { // Constructor actualizado
         this.Wq_sim = Wq_sim;
         this.W_sim = W_sim;
         this.Lq_sim = Lq_sim;
@@ -51,10 +51,10 @@ public class ResultadoSimulacionMM1 {
     public double getMaxEspera() { return maxEspera; }
     public int getClientesSinEspera() { return clientesSinEspera; }
     public List<Cliente> getClientesCompletados() { return clientesCompletados; }
-    
+    public double getTiempoTotalSimulacion() { return tiempoTotalSimulacion; }
+
     public String[][] obtenerTablaDetallada() {
         String[][] tabla = new String[clientesCompletados.size()][11];
-        
         for (int i = 0; i < clientesCompletados.size(); i++) {
             Cliente c = clientesCompletados.get(i);
             tabla[i][0] = String.valueOf(c.getId());
@@ -77,7 +77,6 @@ public class ResultadoSimulacionMM1 {
         System.out.println("CLIENTE#\tALEATORIO1\tTIEMPO_ENTRE_LLEGADA\tMOMENTO_LLEGADA\t" +
                           "TIEMPO_INICIO_SERVICIO\tTIEMPO_ESPERA\tALEATORIO2\t" +
                           "TIEMPO_SERVICIO\tTIEMPO_TERMINACION_SERVICIO\tTIEMPO_OCIO1\tTIEMPO_SISTEMA");
-        
         String[][] tabla = obtenerTablaDetallada();
         for (String[] fila : tabla) {
             System.out.println(String.join("\t\t", fila));
@@ -88,7 +87,7 @@ public class ResultadoSimulacionMM1 {
     public String generarReporte(ResultadoAnaliticoMM1 analitico) {
         StringBuilder sb = new StringBuilder();
         sb.append("\n========== RESULTADOS SIMULACIÓN M/M/1 ==========\n");
-        sb.append(String.format("Clientes simulados: %d\n", N));
+        sb.append(String.format("Clientes simulados (post warm-up): %d\n", N));
         sb.append("\n--- MÉTRICAS PRINCIPALES ---\n");
         sb.append(String.format("%-35s %10.4f  (Teórico: %.4f, Error: %.2f%%)\n",
             "Tiempo promedio en cola (Wq):", Wq_sim, analitico.getWq(),
@@ -105,7 +104,7 @@ public class ResultadoSimulacionMM1 {
         
         sb.append("\n--- MÉTRICAS ADICIONALES (SOLO SIMULACIÓN) ---\n");
         sb.append(String.format("Utilización del servidor: %.4f (%.2f%%)\n", utilizacion, utilizacion * 100));
-        sb.append(String.format("Máxima longitud de cola: %d clientes\n", maxCola));
+        sb.append(String.format("Máxima longitud de cola (fase estable): %d clientes\n", maxCola));
         sb.append(String.format("Tiempo máximo de espera: %.4f unidades\n", maxEspera));
         sb.append(String.format("Clientes sin espera: %d (%.2f%%)\n",
             clientesSinEspera, (clientesSinEspera * 100.0 / N)));
@@ -113,9 +112,9 @@ public class ResultadoSimulacionMM1 {
         double[] ic95Wq = Estadisticas.calcularIC95(tiemposEspera);
         sb.append(String.format("IC 95%% para Wq: [%.4f, %.4f]\n", ic95Wq[0], ic95Wq[1]));
         
-        // CORRECCIÓN: Cálculo de Ley de Little usando el tiempo total real
         sb.append("\n--- VALIDACIÓN (LEY DE LITTLE) ---\n");
-        double lambdaEfectiva = N / tiempoTotalSimulacion; // Antes usaba el último tiempo de servicio
+        // CORRECCIÓN: Usar N / Tiempo Total Real
+        double lambdaEfectiva = N / tiempoTotalSimulacion;
         double L_little = lambdaEfectiva * W_sim;
         sb.append(String.format("L (simulado): %.4f\n", L_sim));
         sb.append(String.format("λ efect·W (Ley de Little): %.4f\n", L_little));

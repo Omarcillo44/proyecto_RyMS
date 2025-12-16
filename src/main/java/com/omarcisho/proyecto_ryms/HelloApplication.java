@@ -20,6 +20,8 @@ public class HelloApplication extends Application {
         stage.setTitle("Sistema de Colas - UPIICSA");
         // stage.setMaximized(true); // Opcional
         stage.setScene(scene);
+        stage.setMaximized(true);
+        stage.setFullScreen(true);
         stage.show();
     }
 
@@ -121,8 +123,13 @@ public class HelloApplication extends Application {
             }
 
             System.out.println("\n🔄 Ejecutando simulación...");
-            // Nota: MM1 no requiere warmUp explícito en el constructor, se maneja interno o simple
-            ResultadoSimulacionMM1 resultadoSim = SimuladorMM1.simular(lambda, mu, N, semilla);
+
+            // AGREGAR ESTO: Definir Warm-Up (20% de N)
+            int warmUp = (int) (N * 0.20);
+            System.out.println("ℹ️  Se descartarán los primeros " + warmUp + " clientes (Warm-up 20%) para estabilizar métricas.");
+
+            // LLAMADA ACTUALIZADA
+            ResultadoSimulacionMM1 resultadoSim = SimuladorMM1.simular(lambda, mu, N, warmUp, semilla);
 
             // PASO 3: MOSTRAR COMPARACIÓN
             System.out.println(resultadoSim.generarReporte(resultadoAnalitico));

@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 
 public class MMsSimulacionController {
 
-    @FXML private Label lblLambdaHeredado, lblMuHeredado, lblSHeredado; //
+    @FXML private Label lblLambdaHeredado, lblMuHeredado, lblSHeredado, lblLittle; //
     @FXML private TextField txtN, txtSemilla;
     @FXML private CheckBox chkUsarSemilla;
     @FXML private ProgressBar progressBar; //
@@ -140,7 +140,16 @@ public class MMsSimulacionController {
         double[] ic = Estadisticas.calcularIC95(tiemposEspera);
         lblIC95.setText(String.format("• IC 95%% para Wq: [%.4f, %.4f]", ic[0], ic[1]));
         
+        double lambdaEfectiva = simulacion.getClientesCompletados().size() / simulacion.getTiempoTotalSimulacion();
+        double L_little = lambdaEfectiva * simulacion.getWSim();
+        double errorLittle = Estadisticas.calcularErrorRelativo(simulacion.getLSim(), L_little);
+
+        lblLittle.setText(String.format("• Validación Little: L sim (%.4f) vs λW (%.4f) -> Dif: %.4f%%",
+                simulacion.getLSim(), L_little, errorLittle));
+
         vboxMetricasAdicionales.setVisible(true);
+
+
     }
 
     @FXML
@@ -163,6 +172,7 @@ public class MMsSimulacionController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/omarcisho/proyecto_ryms/MMsAnalitico.fxml"));
         Parent root = loader.load();
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setMaximized(true);
         stage.setScene(new Scene(root));
     }
 

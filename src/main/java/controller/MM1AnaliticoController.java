@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import util.ValidadorParametros;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class MM1AnaliticoController {
 
@@ -78,13 +79,14 @@ public class MM1AnaliticoController {
         controller.initData(resultadoActual, lambda, mu);
 
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setMaximized(true);
         stage.setScene(new Scene(root));
     }
     
     @FXML
     void volver(ActionEvent event) throws IOException {
         // Lógica para regresar al Menu
-        Parent root = FXMLLoader.load(getClass().getResource("/com/omarcisho/proyecto_ryms/MenuPrincipal.fxml"));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/omarcisho/proyecto_ryms/MenuPrincipal.fxml")));
         ((Stage)((Node)event.getSource()).getScene().getWindow()).setScene(new Scene(root));
     }
 

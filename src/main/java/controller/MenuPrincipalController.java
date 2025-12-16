@@ -30,6 +30,7 @@ public class MenuPrincipalController {
         Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(new Scene(root));
+        stage.setMaximized(true);
         stage.show();
     }
 }

@@ -50,7 +50,7 @@ public class ResultadoSimulacionMMs {
     public double getLSim() { return L_sim; }
     public double[] getUtilizaciones() { return utilizaciones; }
     public List<Cliente> getClientesCompletados() { return clientesCompletados; }
-    
+    public double getTiempoTotalSimulacion() { return tiempoTotalSimulacion; }
     // Getters necesarios para el controlador JavaFX (que faltaban antes)
     public int getMaxCola() { return maxCola; }
     public double getMaxEspera() { return maxEspera; }

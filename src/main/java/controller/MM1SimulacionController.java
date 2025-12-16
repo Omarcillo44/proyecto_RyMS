@@ -21,7 +21,7 @@ import java.io.IOException;
 
 public class MM1SimulacionController {
 
-    @FXML private Label lblLambdaHeredado, lblMuHeredado, lblProgreso;
+    @FXML private Label lblLambdaHeredado, lblMuHeredado, lblProgreso, lblLittle;
     @FXML private TextField txtN, txtSemilla;
     @FXML private CheckBox chkUsarSemilla;
     @FXML private ProgressBar progressBar;
@@ -65,11 +65,14 @@ public class MM1SimulacionController {
                 mostrarAlerta("Advertencia", "N es muy bajo, los resultados no convergerán.");
             }
 
-            // Ejecutar lógica
-            simulacion = SimuladorMM1.simular(lambda, mu, N, semilla);
-            
+            // NUEVO: Definir Warm-Up (20% de N) para estabilizar el sistema
+            int warmUp = (int) (N * 0.20);
+
+            // Ejecutar lógica pasando el warmUp
+            simulacion = SimuladorMM1.simular(lambda, mu, N, warmUp, semilla);
+
             mostrarResultados();
-            
+
         } catch (NumberFormatException e) {
             mostrarAlerta("Error", "Revise los valores numéricos.");
         }
@@ -82,6 +85,7 @@ public class MM1SimulacionController {
             new FilaComparacion("W (Sistema)", analitico.getW(), simulacion.getWSim()),
             new FilaComparacion("Lq (Cola)", analitico.getLq(), simulacion.getLqSim()),
             new FilaComparacion("L (Sistema)", analitico.getL(), simulacion.getLSim())
+
         );
         tableComparacion.setItems(datos);
         vboxComparacion.setVisible(true);
@@ -93,8 +97,19 @@ public class MM1SimulacionController {
         double[] ic = Estadisticas.calcularIC95(simulacion.getClientesCompletados().stream().map(c -> c.getTiempoEspera()).toList()); // Nota: tuve que adaptar esto, idealmente simulacion retorna la lista de tiempos directa o el array
         // Nota: En tu código original simulacion.tiemposEspera es private y no tiene getter directo salvo dentro de generarReporte. 
         // Asumo que agregaste getters públicos en ResultadoSimulacionMM1 para las listas o el IC.
-        
+
+        double lambdaEfectiva = simulacion.getClientesCompletados().size() / simulacion.getTiempoTotalSimulacion();
+        double L_little = lambdaEfectiva * simulacion.getWSim();
+        double errorLittle = Estadisticas.calcularErrorRelativo(simulacion.getLSim(), L_little);
+
+        lblLittle.setText(String.format("• Validación Little: L sim (%.4f) vs λW (%.4f) -> Dif: %.4f%%",
+                simulacion.getLSim(), L_little, errorLittle));
+
         vboxMetricasAdicionales.setVisible(true);
+
+
+        vboxMetricasAdicionales.setVisible(true);
+
     }
 
     @FXML
@@ -106,14 +121,20 @@ public class MM1SimulacionController {
         controller.initData(simulacion.getClientesCompletados()); // Pasar lista de clientes
 
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setMaximized(true);
         stage.setScene(new Scene(root));
     }
-    
+
     @FXML
     void volver(ActionEvent event) throws IOException {
-         // Cargar FXML de MM1Analitico y restaurar estado si es necesario
-         // O simplemente volver atrás
-         // ... Similar a otros métodos volver
+        // Cargar la vista anterior (Analítico M/M/1)
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/omarcisho/proyecto_ryms/MM1Analitico.fxml"));
+        Parent root = loader.load();
+
+        // Obtener el escenario actual y cambiar la escena
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setMaximized(true);
+        stage.setScene(new Scene(root));
     }
 
     private void mostrarAlerta(String titulo, String contenido) {
